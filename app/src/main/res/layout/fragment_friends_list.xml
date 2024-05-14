@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.friends.FriendsListFragment">
+
+    <com.example.projectforjava.customElements.CustomSearchEditText
+        android:id="@+id/editTextSearchFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Поиск по имени"
+        android:imeOptions="actionSearch"
+        android:layout_marginTop="10dp"
+        android:inputType="text"
+        android:singleLine="true"
+        android:paddingRight="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/incomingFriendsRequests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextSearchFriends"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:orientation="horizontal"
+        android:background="@drawable/background_challenge_item_unchecked">
+
+        <!-- Кнопка слева -->
+        <ImageView
+            android:id="@+id/warningButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:adjustViewBounds="true"
+            android:background="@drawable/friend_requests"
+            android:scaleType="centerCrop"/>
+
+        <!-- Пространство для разделения кнопок -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:text="Входящие запросы в друзья"
+            android:gravity="center"/>
+
+        <!-- Кнопка справа -->
+        <TextView
+            android:id="@+id/incomingFriendsRequestsCount"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="2dp"
+            android:layout_marginEnd="4dp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/incomingFriendsRequests"
+        android:id="@+id/friendsRecyclerView"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>
