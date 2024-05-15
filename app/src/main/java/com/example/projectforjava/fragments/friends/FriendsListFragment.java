@@ -6,18 +6,13 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.example.projectforjava.R;
-import com.example.projectforjava.activities.EditChallengeActivity;
-import com.example.projectforjava.activities.IncomingFriendsRequestsActivity;
 import com.example.projectforjava.activities.MainActivity;
 
 import java.util.Objects;
@@ -38,11 +33,20 @@ public class FriendsListFragment extends Fragment {
         incomingFriendsRequests.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), IncomingFriendsRequestsActivity.class);
-                startActivityForResult(intent, 1);
+                inflateIncomingFriendsRequestsFragment();
             }
         });
 
         return view;
+    }
+
+    private void inflateIncomingFriendsRequestsFragment() {
+        IncomingFriendsRequestsFragment incomingFriendsRequestsFragment = new IncomingFriendsRequestsFragment();
+
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.friendsFragmentContainer, incomingFriendsRequestsFragment, "FRIEND_REQUESTS");
+        transaction.addToBackStack("FRIEND_REQUESTS");
+        transaction.commit();
     }
 }

@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.projectforjava.customElements.CustomViewPager;
 import com.example.projectforjava.alerts.ExitorAlert;
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             multiPermissionLauncher.launch(new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM, Manifest.permission.RECEIVE_BOOT_COMPLETED,
-                    Manifest.permission.READ_EXTERNAL_STORAGE});
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS});
         }
 
         Notificator.scheduleNotification(this, Calendar.getInstance());
@@ -107,6 +109,21 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(tabLayout.getTabAt(1)).setIcon(R.drawable.global_fragment);
         Objects.requireNonNull(tabLayout.getTabAt(2)).setIcon(R.drawable.friends_fragment);
         Objects.requireNonNull(tabLayout.getTabAt(3)).setIcon(R.drawable.home_fragment);
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                removeNestedFragmentIfPresent();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                removeNestedFragmentIfPresent();
+            }
+        });
     }
 
     @Override
@@ -133,9 +150,26 @@ public class MainActivity extends AppCompatActivity {
         this.isLogined = newStatus;
     }
 
+    private void removeNestedFragmentIfPresent() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("FRIEND_REQUESTS");
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            fragmentManager.popBackStack("FRIEND_REQUESTS", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+    }
+
     @SuppressLint("MissingSuperCall")
     @Override
     public void onBackPressed() {
-        ExitorAlert.showExitDialog(this);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("FRIEND_REQUESTS");
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            fragmentManager.popBackStack("FRIEND_REQUESTS", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
+        else{
+            ExitorAlert.showExitDialog(this);
+        }
     }
 }

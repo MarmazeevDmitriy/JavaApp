@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import com.example.projectforjava.fragments.friends.AddFriendsFragment;
 import com.example.projectforjava.fragments.friends.ChallengesFromFriendsFragment;
 import com.example.projectforjava.fragments.friends.ChallengesToFriendsFragment;
+import com.example.projectforjava.fragments.friends.FriendsContainerFragment;
 import com.example.projectforjava.fragments.friends.FriendsListFragment;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomViewPager;
@@ -53,7 +55,7 @@ public class FriendsFragment extends Fragment {
             public Fragment getItem(int position) {
                 switch (position) {
                     case 0:
-                        return new FriendsListFragment();
+                        return new FriendsContainerFragment();
                     case 1:
                         return new ChallengesFromFriendsFragment();
                     case 2:
@@ -80,6 +82,30 @@ public class FriendsFragment extends Fragment {
         Objects.requireNonNull(tabLayout.getTabAt(2)).setText("To friends");
         Objects.requireNonNull(tabLayout.getTabAt(3)).setText("Add friends");
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                removeNestedFragmentIfPresent();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) { }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                removeNestedFragmentIfPresent();
+            }
+        });
+
         return view;
+    }
+
+    private void removeNestedFragmentIfPresent() {
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag("FRIEND_REQUESTS");
+        if (fragment != null) {
+            fragmentManager.beginTransaction().remove(fragment).commit();
+            fragmentManager.popBackStack("FRIEND_REQUESTS", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        }
     }
 }

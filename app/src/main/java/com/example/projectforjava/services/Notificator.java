@@ -56,35 +56,18 @@ public class Notificator {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        switch (lastNotificationHour){
-            case -1:
-                int[] notificationHours = {4, 8, 12, 16, 20, 24};
-                int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-                for (int hour : notificationHours) {
-                    if (hour > currentHour) {
-                        lastNotificationHour = hour % 24;
-                        break;
-                    }
+        if(lastNotificationHour == -1){
+            int[] notificationHours = {4, 8, 12, 16, 20, 24};
+            int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+            for (int hour : notificationHours) {
+                if (hour > currentHour) {
+                    lastNotificationHour = hour % 24;
+                    break;
                 }
-                break;
-            case 0:
-                lastNotificationHour = 6;
-                break;
-            case 4:
-                lastNotificationHour = 8;
-                break;
-            case 8:
-                lastNotificationHour = 12;
-                break;
-            case 12:
-                lastNotificationHour = 16;
-                break;
-            case 16:
-                lastNotificationHour = 20;
-                break;
-            case 20:
-                lastNotificationHour = 0;
-                break;
+            }
+        }
+        else{
+            lastNotificationHour = (lastNotificationHour + 4) % 24;
         }
 
         if(lastNotificationHour == 0)
