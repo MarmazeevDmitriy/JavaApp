@@ -1,14 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.friends.ChallengesToFriendsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.example.projectforjava.customElements.CustomSearchEditText
+        android:layout_marginTop="10dp"
+        android:id="@+id/editTextSearchToFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Поиск по названию"
+        android:layout_alignParentTop="true"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:singleLine="true"
+        android:paddingEnd="10dp"
+        tools:ignore="RtlSymmetry" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/editTextSearchToFriends"
+        android:layout_above="@id/buttonAddChallengeForFriends"
+        android:id="@+id/toFriendsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:scrollbars="vertical" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/buttonAddChallengeForFriends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Добавить челлендж"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/rectangle_border_black" />
+
+</RelativeLayout>

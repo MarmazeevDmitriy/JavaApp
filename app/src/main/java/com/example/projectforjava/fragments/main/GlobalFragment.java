@@ -1,6 +1,8 @@
 package com.example.projectforjava.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.example.projectforjava.fragments.global.AcceptedChallengesFragment;
 import com.example.projectforjava.fragments.global.CreateGlobalChallengeFragment;
 import com.example.projectforjava.fragments.global.GlobalChallengesFragment;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomViewPager;
 import com.example.projectforjava.fragments.global.TopOfPeriodChallengesFragment;
+import com.example.projectforjava.utils.ImgUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -34,6 +39,12 @@ public class GlobalFragment extends Fragment {
 
         CustomViewPager viewPager = view.findViewById(R.id.viewPagerGlobal);
         TabLayout tabLayout = view.findViewById(R.id.tabLayoutGlobal);
+
+        ImageView profileImageView = view.findViewById(R.id.circleProfileImage);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
+        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 256);
+        bitmap = ImgUtils.getRoundedBitmap(bitmap);
+        profileImageView.setImageBitmap(bitmap);
 
         viewPager.setSwipeEnabled(false);
 
@@ -55,6 +66,8 @@ public class GlobalFragment extends Fragment {
                     case 1:
                         return new TopOfPeriodChallengesFragment();
                     case 2:
+                        return new AcceptedChallengesFragment();
+                    case 3:
                         return new CreateGlobalChallengeFragment();
                     default:
                         return null;
@@ -63,7 +76,7 @@ public class GlobalFragment extends Fragment {
 
             @Override
             public int getCount() {
-                return 3; // Количество ваших фрагментов
+                return 4; // Количество ваших фрагментов
             }
         });
 
@@ -73,7 +86,8 @@ public class GlobalFragment extends Fragment {
         // Установите векторные изображения на вкладках
         Objects.requireNonNull(tabLayout.getTabAt(0)).setText("Challenges");
         Objects.requireNonNull(tabLayout.getTabAt(1)).setText("Top challenge");
-        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("Your challenges");
+        Objects.requireNonNull(tabLayout.getTabAt(2)).setText("Accepted challenges");
+        Objects.requireNonNull(tabLayout.getTabAt(3)).setText("Your challenges");
 
         return view;
     }

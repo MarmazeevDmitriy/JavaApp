@@ -53,7 +53,17 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/sendFriendRequest"
+        android:id="@+id/deleteRequest"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/delete_request"
+        android:layout_gravity="center"
+        android:layout_marginLeft="8dp"
+        android:background="@color/white"
+        android:layout_marginRight="8dp"/>
+
+    <ImageButton
+        android:id="@+id/acceptFriend"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/add_friend"

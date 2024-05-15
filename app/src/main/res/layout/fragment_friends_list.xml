@@ -14,7 +14,8 @@
         android:layout_marginTop="10dp"
         android:inputType="text"
         android:singleLine="true"
-        android:paddingRight="10dp"/>
+        android:paddingEnd="10dp"
+        tools:ignore="RtlSymmetry" />
 
     <LinearLayout
         android:id="@+id/incomingFriendsRequests"

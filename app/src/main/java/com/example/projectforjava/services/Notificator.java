@@ -26,6 +26,7 @@ import com.example.projectforjava.utils.DateUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 
 public class Notificator {
@@ -208,17 +209,21 @@ public class Notificator {
         }
     }
 
-    public static List<String> getUncompletedChallengeTitles(Context context){
+    public static List<String> getUncompletedChallengeTitles(Context context) {
         PersonalChallengeDatabase personalChallengeDatabase = PersonalChallengeDatabase.getInstance(context);
         PersonalChallengeDao personalChallengeDao = personalChallengeDatabase.challengeDao();
-        List<String> uncomletedChallengeTitles = personalChallengeDao.getUncomletedChallengeTitles(false);
+        List<String> uncompletedChallengeTitles = personalChallengeDao.getUncomletedChallengeTitles(false);
         String currentDayOfWeek = DateUtil.getCurrentDayOfWeek();
-        for(String title: uncomletedChallengeTitles){
+
+        Iterator<String> iterator = uncompletedChallengeTitles.iterator();
+        while (iterator.hasNext()) {
+            String title = iterator.next();
             PersonalChallenge personalChallenge = personalChallengeDao.getChallengeByTitle(title);
-            if(!personalChallenge.getDays().contains(currentDayOfWeek)){
-                uncomletedChallengeTitles.remove(title);
+            if (!personalChallenge.getDays().contains(currentDayOfWeek)) {
+                iterator.remove();
             }
         }
-        return uncomletedChallengeTitles;
+
+        return uncompletedChallengeTitles;
     }
 }
