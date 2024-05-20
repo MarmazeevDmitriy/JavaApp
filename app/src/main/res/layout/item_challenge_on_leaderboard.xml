@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- ImageView для отображения картинки сверху -->
+    <ImageView
+        android:id="@+id/onLeaderboardChallengeImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"/>
+
+    <!-- TextView для заголовка -->
+    <TextView
+        android:id="@+id/onLeaderboardChallengeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Заголовок"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"/>
+
+    <!-- TextView для описания-->
+    <TextView
+        android:id="@+id/onLeaderboardChallengeDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Описание"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/onLeaderboardChallengeTimesCompleted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Количество выполнений: "
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp"/>
+
+</LinearLayout>
