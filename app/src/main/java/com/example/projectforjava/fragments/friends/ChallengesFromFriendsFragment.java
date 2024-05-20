@@ -1,66 +1,149 @@
 package com.example.projectforjava.fragments.friends;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.EditText;
 
 import com.example.projectforjava.R;
+import com.example.projectforjava.adapters.friends.FriendsChallengesAdapter;
+import com.example.projectforjava.alerts.alertDialogs.FriendChallengeAlert;
+import com.example.projectforjava.alerts.interfaces.FriendChallengeDialogListener;
+import com.example.projectforjava.templates.friends.FriendsChallenge;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChallengesFromFriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class ChallengesFromFriendsFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.Objects;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class ChallengesFromFriendsFragment extends Fragment implements FriendChallengeDialogListener {
+    private static final int OPEN_ACTIONS_DIALOG = 4;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    FriendsChallengesAdapter adapter;
+    private RecyclerView recyclerView;
+
+    EditText editTextSearch;
 
     public ChallengesFromFriendsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChallengesFromFriendsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChallengesFromFriendsFragment newInstance(String param1, String param2) {
-        ChallengesFromFriendsFragment fragment = new ChallengesFromFriendsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_challenges_from_friends, container, false);
+        View view = inflater.inflate(R.layout.fragment_challenges_from_friends, container, false);
+
+        recyclerView = view.findViewById(R.id.fromFriendsRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        ArrayList<FriendsChallenge> cList = new ArrayList<>();
+
+        Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.random);
+        ArrayList<String> friendsNames = new ArrayList<>();
+        friendsNames.add("Friend 1");
+        friendsNames.add("Friend 2");
+        friendsNames.add("Friend 3");
+        // Заполните friendList вашими данными
+        cList.add(new FriendsChallenge(drawable, "Jump fast", "Idk", friendsNames, "Friend 1"));
+        cList.add(new FriendsChallenge(drawable, "Jump quick", "Idk again", friendsNames, "Friend 2"));
+        cList.add(new FriendsChallenge(drawable, "Jump just", "Bruhhhhhhhhhhhhhhhhhhhhhhhh", friendsNames, "Friend3"));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new FriendsChallengesAdapter(cList, false);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new FriendsChallengesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Действия при нажатии на элемент списка
+                // Например, открытие экрана редактирования челленджа
+                editTextSearch.setEnabled(false);
+                FriendChallengeAlert.showFriendChallengeDialog(getContext(), position, ChallengesFromFriendsFragment.this);
+            }
+        });
+
+        editTextSearch = view.findViewById(R.id.editTextSearchFromFriends);
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onReject(int position) {
+        View itemView = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(position)).itemView;
+        itemView.setBackgroundColor(getResources().getColor(R.color.red, requireActivity().getTheme()));
+        vanishAndPopItem(itemView, position);
+    }
+
+    @Override
+    public void onComplete(int position) {
+        View itemView = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(position)).itemView;
+        itemView.setBackgroundColor(getResources().getColor(R.color.green, requireActivity().getTheme()));
+        vanishAndPopItem(itemView, position);
+    }
+
+    @Override
+    public void onCancel() {
+        editTextSearch.setEnabled(true);
+    }
+
+    public void vanishAndPopItem(final View view, final int position){
+        ValueAnimator animator = ValueAnimator.ofFloat(1f, 0f);
+        animator.setDuration(1000);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                view.setAlpha(alpha);
+            }
+        });
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // Ничего не делаем
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // Удаляем элемент из списка и уведомляем адаптер
+                adapter.deleteItem(position);
+                editTextSearch.setEnabled(true);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+                // Ничего не делаем
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                // Ничего не делаем
+            }
+        });
+        animator.start();
     }
 }

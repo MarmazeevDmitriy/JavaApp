@@ -11,7 +11,7 @@
     android:layout_marginRight="2dp"
     android:textColor="@android:color/black"
     android:textSize="18sp"
-    android:background="@drawable/background_challenge_item_unchecked" >
+    android:background="@drawable/background_rounded_rectangle_border_black" >
 
     <ImageView
         android:id="@+id/personsIcon"
@@ -38,7 +38,7 @@
             android:layout_marginBottom="4dp"/>
 
         <TextView
-            android:id="@+id/friendsAmount"
+            android:id="@+id/friendsTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
@@ -59,17 +59,17 @@
         android:src="@drawable/delete_request"
         android:layout_gravity="center"
         android:layout_marginLeft="8dp"
-        android:background="@color/white"
+        android:background="@color/red"
         android:layout_marginRight="8dp"/>
 
     <ImageButton
-        android:id="@+id/acceptFriend"
+        android:id="@+id/acceptRequest"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/add_friend"
         android:layout_gravity="center"
         android:layout_marginLeft="8dp"
-        android:background="@color/white"
+        android:background="@color/green"
         android:layout_marginRight="8dp"/>
 
 </LinearLayout>

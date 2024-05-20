@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EditChallengeActivity extends AppCompatActivity {
+public class EditPersonalChallengeActivity extends AppCompatActivity {
     private PersonalChallenge personalChallengeToEdit;
 
     private Button btEditChallenge;
@@ -86,7 +86,8 @@ public class EditChallengeActivity extends AppCompatActivity {
                 public void run() {
                     personalChallengeList = (ArrayList<PersonalChallenge>) personalChallengeDao.getAllChallenges();
                     if (position < personalChallengeList.size()) {
-                        personalChallengeToEdit = personalChallengeList.get(position);
+                        ArrayList<PersonalChallenge> sortChallenges = new ArrayList<>(PersonalChallenge.sortChallenges(personalChallengeList));
+                        personalChallengeToEdit = sortChallenges.get(position);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

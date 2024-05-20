@@ -30,8 +30,6 @@ public class DatePreferences {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String lastLoginDate = preferences.getString(KEY_LAST_LOGIN_DATE, "");
         String currentDate = sdf.format(new Date());
-        Log.d("DatePreferences", "lastLoginDate: " + lastLoginDate);
-        Log.d("DatePreferences", "currentDate: " + currentDate);
         return !lastLoginDate.equals(currentDate);
     }
 

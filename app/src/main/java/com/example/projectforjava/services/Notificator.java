@@ -24,7 +24,6 @@ import com.example.projectforjava.database.model.PersonalChallenge;
 import com.example.projectforjava.preferences.DatePreferences;
 import com.example.projectforjava.utils.DateUtil;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;

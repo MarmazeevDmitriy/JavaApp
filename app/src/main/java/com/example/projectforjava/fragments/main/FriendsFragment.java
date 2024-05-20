@@ -1,6 +1,8 @@
 package com.example.projectforjava.fragments.main;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.projectforjava.fragments.friends.AddFriendsFragment;
 import com.example.projectforjava.fragments.friends.ChallengesFromFriendsFragment;
@@ -20,6 +24,7 @@ import com.example.projectforjava.fragments.friends.FriendsContainerFragment;
 import com.example.projectforjava.fragments.friends.FriendsListFragment;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomViewPager;
+import com.example.projectforjava.utils.ImgUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.Objects;
@@ -38,6 +43,14 @@ public class FriendsFragment extends Fragment {
 
         CustomViewPager viewPager = view.findViewById(R.id.viewPagerFriends);
         TabLayout tabLayout = view.findViewById(R.id.tabLayoutFriends);
+
+        TextView textView = view.findViewById(R.id.headerUsersName);
+        textView.setText("Димастер");
+        ImageView profileImageView = view.findViewById(R.id.circleProfileImage);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
+        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 128);
+        bitmap = ImgUtils.getRoundedBitmap(bitmap);
+        profileImageView.setImageBitmap(bitmap);
 
         viewPager.setSwipeEnabled(false);
 

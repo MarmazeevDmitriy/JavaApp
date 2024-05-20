@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    tools:context=".activities.EditFriendChallengeActivity">
+
+    <ImageView
+        android:id="@+id/friendChallengeImageInput"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/no_image_set"
+        android:scaleType="centerCrop"/>
+
+    <EditText
+        android:id="@+id/editTextTitleFC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/friendChallengeImageInput"
+        android:hint="Название челленджа"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextDescriptionFC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTitleFC"
+        android:layout_marginTop="16dp"
+        android:hint="Описание челленджа"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonEditChallengeFC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonDeleteChallengeFC"
+        android:layout_marginTop="24dp"
+        android:text="Изменить челлендж" />
+
+    <Button
+        android:id="@+id/buttonAddNewChallengeFC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:text="Добавить челлендж"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonDeleteChallengeFC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="2dp"
+        android:text="Удалить челлендж" />
+
+    <LinearLayout
+        android:id="@+id/chooseFriends"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@id/editTextDescriptionFC"
+        android:layout_above="@id/buttonEditChallengeFC">
+
+        <TextView
+            android:id="@+id/selectedFriendsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textColor="@android:color/black" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chooseFriendsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

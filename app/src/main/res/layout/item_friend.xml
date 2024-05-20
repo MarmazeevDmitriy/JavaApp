@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_challenge"
+    android:id="@+id/item_friend"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -11,7 +11,7 @@
     android:layout_marginRight="2dp"
     android:textColor="@android:color/black"
     android:textSize="18sp"
-    android:background="@drawable/background_challenge_item_unchecked" >
+    android:background="@drawable/background_rounded_rectangle_border_black" >
 
     <ImageView
         android:id="@+id/friendsIcon"
@@ -53,6 +53,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/removeFriend"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/remove_friend"

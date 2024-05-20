@@ -1,6 +1,7 @@
-package com.example.projectforjava.adapter;
+package com.example.projectforjava.adapters.personal;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import android.content.Context;
 
 import com.example.projectforjava.R;
-import com.example.projectforjava.alerts.PersonalChallengeConfirmationAlert;
+import com.example.projectforjava.alerts.alertDialogs.PersonalChallengeConfirmationAlert;
 import com.example.projectforjava.database.dao.PersonalChallengeDao;
 import com.example.projectforjava.database.model.PersonalChallenge;
+import com.example.projectforjava.fragments.main.HomeFragment;
 import com.example.projectforjava.utils.DateUtil;
 
 public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChallengeAdapter.ChallengeViewHolder> {
@@ -29,8 +32,7 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
     private PersonalChallengeDao personalChallengeDao;
 
     Context context;
-
-    public boolean updateEnded = false;
+    private WeakReference<HomeFragment> homeFragmentWeakReference;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
@@ -40,10 +42,11 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
         this.listener = listener;
     }
 
-    public PersonalChallengeAdapter(ArrayList<PersonalChallenge> personalChallengeList, Context context, PersonalChallengeDao dao) {
+    public PersonalChallengeAdapter(ArrayList<PersonalChallenge> personalChallengeList, Context context, PersonalChallengeDao dao, WeakReference<HomeFragment> weakReference) {
         this.personalChallengeList = personalChallengeList;
         this.context = context;
         this.personalChallengeDao = dao;
+        this.homeFragmentWeakReference = weakReference;
     }
 
     @NonNull
@@ -64,8 +67,9 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked && updateEnded) {
-                    PersonalChallengeConfirmationAlert.showConfirmationDialog(context, holder.itemView, checkBox, currentPersonalChallenge, position, personalChallengeDao, PersonalChallengeAdapter.this);
+                if (isChecked) {
+                    Log.d("Adapter", currentPersonalChallenge.getTitle());
+                    PersonalChallengeConfirmationAlert.showConfirmationDialog(context, holder.itemView, checkBox, currentPersonalChallenge, position, personalChallengeDao, holder.adapter);
                 }
             }
         });
@@ -83,9 +87,7 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
 
     public void sortOnChallengeCompleted(PersonalChallenge comletedPersonalChallenge, int position){
         this.personalChallengeList.set(position, comletedPersonalChallenge);
-        PersonalChallenge.sortChallenges(personalChallengeList);
-        updateEnded = false;
-        this.notifyDataSetChanged();
+        homeFragmentWeakReference.get().updateRecyclerView(PersonalChallenge.sortChallenges(personalChallengeList));
     }
 
     private ArrayList<PersonalChallenge> getChallengeList() {
@@ -148,13 +150,13 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
                 textViewDays.setVisibility(View.GONE);
 
             if(personalChallenge.getCompletedToday()) {
-                itemChallengeLayout.setBackgroundResource(R.drawable.background_challenge_item_checked);
+                itemChallengeLayout.setBackgroundResource(R.drawable.background_personal_challenge_item_checked);
                 checkBox.setChecked(true);
                 checkBox.setEnabled(false);
             }
 
             else {
-                itemChallengeLayout.setBackgroundResource(R.drawable.background_challenge_item_unchecked);
+                itemChallengeLayout.setBackgroundResource(R.drawable.background_rounded_rectangle_border_black);
                 checkBox.setChecked(false);
                 checkBox.setEnabled(true);
             }
@@ -165,9 +167,6 @@ public class PersonalChallengeAdapter extends RecyclerView.Adapter<PersonalChall
                         !personalChallengeList.get(position).getCompletedToday() &&
                                 personalChallengeList.get(position + 1).getCompletedToday())
                     challengeSeparatorLine.setVisibility(View.VISIBLE);
-
-            if(position == personalChallengeList.size() - 1)
-                adapter.updateEnded = true;
         }
     }
 }

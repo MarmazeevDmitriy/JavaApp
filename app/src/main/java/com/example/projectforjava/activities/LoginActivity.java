@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.projectforjava.alerts.ExitorAlert;
+import com.example.projectforjava.alerts.alertDialogs.ExitorAlert;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomStatusBar;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_login);
 
-        usernameEditText = findViewById(R.id.username_edit_text);
+        usernameEditText = findViewById(R.id.enterUsernameEditText);
         passwordEditText = findViewById(R.id.password_edit_text);
 
         MainActivity mainActivity = new MainActivity();

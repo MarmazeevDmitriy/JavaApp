@@ -1,66 +1,140 @@
 package com.example.projectforjava.fragments.friends;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.projectforjava.R;
+import com.example.projectforjava.activities.EditFriendChallengeActivity;
+import com.example.projectforjava.adapters.friends.FriendsChallengesAdapter;
+import com.example.projectforjava.templates.friends.FriendsChallenge;
+import com.example.projectforjava.utils.ImgUtils;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChallengesToFriendsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class ChallengesToFriendsFragment extends Fragment {
+    private static final int EDIT_FRIENDS_CHALLENGE = 3;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    FriendsChallengesAdapter adapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    EditText editTextSearch;
+
+    ArrayList<FriendsChallenge> challengeList;
 
     public ChallengesToFriendsFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChallengesToFriendsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChallengesToFriendsFragment newInstance(String param1, String param2) {
-        ChallengesToFriendsFragment fragment = new ChallengesToFriendsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_challenges_to_friends, container, false);
+        View view = inflater.inflate(R.layout.fragment_challenges_to_friends, container, false);
+
+        RecyclerView recyclerView = view.findViewById(R.id.toFriendsRecyclerView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        ArrayList<String> friendsNames = new ArrayList<>();
+        friendsNames.add("Friend 1");
+        friendsNames.add("Friend 2");
+        friendsNames.add("Friend 3");
+
+        challengeList = new ArrayList<>();
+        Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.random);
+        drawable = ImgUtils.BitmapToDrawable(ImgUtils.scaleRectangleBitmap(ImgUtils.drawableToBitmap(drawable), 256, 128), requireContext());
+        challengeList.add(new FriendsChallenge(drawable, "Burp fast", "Idk buurp", friendsNames, "Димастер"));
+        challengeList.add(new FriendsChallenge(drawable, "Burp quick", "Idk again buuurp", friendsNames, "Димастер"));
+        challengeList.add(new FriendsChallenge(drawable, "Burp just", "Bruhhhhhhhhhhhhhhhhhhhhhhhh bbbbbbbbbbuuuuuuuuuuuuurp", friendsNames, "Димастер"));
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new FriendsChallengesAdapter(challengeList, true);
+        recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(new FriendsChallengesAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                // Действия при нажатии на элемент списка
+                // Например, открытие экрана редактирования челленджа
+                startEditChallengeActivity(position);
+            }
+        });
+
+        editTextSearch = view.findViewById(R.id.editTextSearchToFriends);
+        editTextSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        view.findViewById(R.id.buttonAddChallengeForFriends).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startEditChallengeActivity(-1);
+            }
+        });
+
+        return view;
+    }
+
+    public void startEditChallengeActivity(int position) {
+        Intent intent = new Intent(getActivity(), EditFriendChallengeActivity.class);
+        intent.putExtra("position", position);
+        if(!challengeList.isEmpty()){
+            ArrayList<String> titles = new ArrayList<>();
+            for(FriendsChallenge friendsChallenge: challengeList){
+                titles.add(friendsChallenge.getTitle());
+            }
+            intent.putStringArrayListExtra("Titles", titles);
+        }
+        if(position != -1){
+            intent.putExtra("FriendsChallenge", adapter.getItem(position));
+        }
+        startActivityForResult(intent, EDIT_FRIENDS_CHALLENGE);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == EDIT_FRIENDS_CHALLENGE) {
+            if (resultCode == Activity.RESULT_OK) {
+                switch (Objects.requireNonNull(data.getStringExtra("Action"))){
+                    case "Add":
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            adapter.addItem(data.getParcelableExtra("challenge", FriendsChallenge.class));
+                        }
+                        break;
+                    case "Update":
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            adapter.updateItem(data.getParcelableExtra("challenge", FriendsChallenge.class), data.getIntExtra("position", -1));
+                        }
+                        break;
+                    case "Delete":
+                        adapter.deleteItem(data.getIntExtra("position", -1));
+                        break;
+                }
+            }
+        }
     }
 }

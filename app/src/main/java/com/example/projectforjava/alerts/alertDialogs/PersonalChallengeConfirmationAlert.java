@@ -1,4 +1,4 @@
-package com.example.projectforjava.alerts;
+package com.example.projectforjava.alerts.alertDialogs;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -13,7 +13,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.projectforjava.adapter.PersonalChallengeAdapter;
+import com.example.projectforjava.adapters.personal.PersonalChallengeAdapter;
 import com.example.projectforjava.R;
 import com.example.projectforjava.database.dao.PersonalChallengeDao;
 import com.example.projectforjava.database.model.PersonalChallenge;
@@ -57,7 +57,7 @@ public class PersonalChallengeConfirmationAlert {
                 else {
                     // Если пользователь подтвердил выполнение челленджа, меняем цвет фона челленджа
                     LinearLayout ItemChallengeLayout = itemView.findViewById(R.id.item_challenge);
-                    ItemChallengeLayout.setBackgroundResource(R.drawable.background_challenge_item_checked);
+                    ItemChallengeLayout.setBackgroundResource(R.drawable.background_personal_challenge_item_checked);
                     // Блокируем чекбокс, чтобы он не мог быть изменен
                     checkBox.setEnabled(false);
 

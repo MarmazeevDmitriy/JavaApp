@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.projectforjava.fragments.global.AcceptedChallengesFragment;
 import com.example.projectforjava.fragments.global.CreateGlobalChallengeFragment;
@@ -40,9 +41,11 @@ public class GlobalFragment extends Fragment {
         CustomViewPager viewPager = view.findViewById(R.id.viewPagerGlobal);
         TabLayout tabLayout = view.findViewById(R.id.tabLayoutGlobal);
 
+        TextView textView = view.findViewById(R.id.headerUsersName);
+        textView.setText("Димастер");
         ImageView profileImageView = view.findViewById(R.id.circleProfileImage);
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
-        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 256);
+        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 128);
         bitmap = ImgUtils.getRoundedBitmap(bitmap);
         profileImageView.setImageBitmap(bitmap);
 

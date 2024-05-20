@@ -11,7 +11,7 @@
     android:layout_marginRight="2dp"
     android:textColor="@android:color/black"
     android:textSize="18sp"
-    android:background="@drawable/background_challenge_item_unchecked" >
+    android:background="@drawable/background_rounded_rectangle_border_black" >
 
     <ImageView
         android:id="@+id/personsIcon"
@@ -30,7 +30,7 @@
         android:layout_marginStart="10dp">
 
         <TextView
-            android:id="@+id/personsName"
+            android:id="@+id/addFriendPersonsName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"
@@ -45,7 +45,7 @@
             android:layout_marginBottom="4dp"/>
 
         <TextView
-            android:id="@+id/globalChallengesCompleted"
+            android:id="@+id/globalChallengesAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"

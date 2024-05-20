@@ -13,8 +13,9 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.TypedValue;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -27,6 +28,10 @@ public class ImgUtils {
             inputStream.close();
         }
         return bitmap;
+    }
+
+    public static Drawable BitmapToDrawable(Bitmap bitmap, Context context){
+        return new BitmapDrawable(context.getResources(), bitmap);
     }
 
     public static Bitmap drawableToBitmap(Drawable drawable) {
@@ -43,6 +48,13 @@ public class ImgUtils {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    public static String BitmapToPNG(Bitmap bitmap){
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 128, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     public static Bitmap getRoundedBitmap(Bitmap bitmap) {

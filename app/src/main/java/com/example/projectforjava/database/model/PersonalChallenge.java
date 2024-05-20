@@ -7,8 +7,6 @@ import androidx.room.PrimaryKey;
 import com.example.projectforjava.utils.DateUtil;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 @Entity(tableName = "personalChallenge")
 public class PersonalChallenge {
@@ -82,37 +80,28 @@ public class PersonalChallenge {
     }
 
     // Сортирует челленджи сначала по isCompletedToday (false вперед), затем по дням недели
-    public static void sortChallenges(ArrayList<PersonalChallenge> personalChallengeList) {
-        // Сортировка по полю isCompletedToday
-        Collections.sort(personalChallengeList, new Comparator<PersonalChallenge>() {
-            @Override
-            public int compare(PersonalChallenge personalChallenge1, PersonalChallenge personalChallenge2) {
-                // Сначала сравниваем по isCompletedToday (false считается большим)
-                if (personalChallenge1.isCompletedToday && !personalChallenge2.isCompletedToday) {
-                    return 1;
-                } else if (!personalChallenge1.isCompletedToday && personalChallenge2.isCompletedToday) {
-                    return -1;
-                } else {
-                    return sortByDaysOfWeek(personalChallenge1, personalChallenge2);
-                }
-            }
-        });
-    }
+    public static ArrayList<PersonalChallenge> sortChallenges(ArrayList<PersonalChallenge> personalChallengeList) {
+        ArrayList<PersonalChallenge> completedTodayList = new ArrayList<>();
+        ArrayList<PersonalChallenge> notContainsTodayList = new ArrayList<>();
+        ArrayList<PersonalChallenge> otherList = new ArrayList<>();
 
-    // Вспомогательный метод для сортировки по дням недели
-    private static int sortByDaysOfWeek(PersonalChallenge c1, PersonalChallenge c2) {
-        // Получаем текущий день недели
-        String currentDayOfWeek = DateUtil.getCurrentDayOfWeek();
-        // Проверяем, содержат ли челленджи текущий день недели в списке дней
-        boolean c1ContainsDay = c1.getDays().contains(currentDayOfWeek);
-        boolean c2ContainsDay = c2.getDays().contains(currentDayOfWeek);
-        // Сортируем челленджи: те, у которых текущий день недели в списке дней, идут вперед
-        if (c1ContainsDay && !c2ContainsDay) {
-            return -1;
-        } else if (!c1ContainsDay && c2ContainsDay) {
-            return 1;
-        } else {
-            return 0;
+        // Разделение списка на три категории
+        for (PersonalChallenge challenge : personalChallengeList) {
+            if (challenge.getCompletedToday()) {
+                completedTodayList.add(challenge);
+            } else if (!challenge.getDays().contains(DateUtil.getCurrentDayOfWeek())) {
+                notContainsTodayList.add(challenge);
+            } else {
+                otherList.add(challenge);
+            }
         }
+
+        // Объединение списков в нужном порядке
+        personalChallengeList.clear();
+        personalChallengeList.addAll(otherList);
+        personalChallengeList.addAll(notContainsTodayList);
+        personalChallengeList.addAll(completedTodayList);
+
+        return personalChallengeList;
     }
 }

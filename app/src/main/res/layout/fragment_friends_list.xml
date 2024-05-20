@@ -27,7 +27,7 @@
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
         android:orientation="horizontal"
-        android:background="@drawable/background_challenge_item_unchecked">
+        android:background="@drawable/background_rounded_rectangle_border_black">
 
         <!-- Кнопка слева -->
         <ImageView

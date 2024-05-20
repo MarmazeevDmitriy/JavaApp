@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -20,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.projectforjava.R;
-import com.example.projectforjava.activities.EditChallengeActivity;
-import com.example.projectforjava.adapter.PersonalChallengeAdapter;
+import com.example.projectforjava.activities.EditPersonalChallengeActivity;
+import com.example.projectforjava.adapters.personal.PersonalChallengeAdapter;
 import com.example.projectforjava.database.dao.PersonalChallengeDao;
 import com.example.projectforjava.database.db.PersonalChallengeDatabase;
 import com.example.projectforjava.database.model.PersonalChallenge;
@@ -32,7 +33,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -105,9 +105,11 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        TextView textView = view.findViewById(R.id.usersName);
+        textView.setText("Димастер");
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
-        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 256);
-        bitmap = ImgUtils.getRoundedSquareBitmap(bitmap, 256, 40);
+        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 128);
+        bitmap = ImgUtils.getRoundedSquareBitmap(bitmap, 128, 20);
         profileImageView.setImageBitmap(bitmap);
 
         return view;
@@ -137,8 +139,8 @@ public class HomeFragment extends Fragment {
         }.execute();
     }
 
-    private void startEditChallengeActivity(int position) {
-        Intent intent = new Intent(getActivity(), EditChallengeActivity.class);
+    public void startEditChallengeActivity(int position) {
+        Intent intent = new Intent(getActivity(), EditPersonalChallengeActivity.class);
         intent.putExtra("position", position);
         startActivityForResult(intent, EDIT_PERSONAL_CHALLENGE);
     }
@@ -167,8 +169,7 @@ public class HomeFragment extends Fragment {
             HomeFragment fragment = fragmentReference.get();
             if (fragment != null) {
                 fragment.personalChallengeList = new ArrayList<>(personalChallenges);
-                PersonalChallenge.sortChallenges(fragment.personalChallengeList);
-                fragment.adapter = new PersonalChallengeAdapter(fragment.personalChallengeList, fragment.getActivity(), PersonalChallengeDatabase.getInstance(fragmentReference.get().getContext()).challengeDao());
+                fragment.adapter = new PersonalChallengeAdapter(PersonalChallenge.sortChallenges(fragment.personalChallengeList), fragment.getActivity(), PersonalChallengeDatabase.getInstance(fragmentReference.get().getContext()).challengeDao(), fragmentReference);
                 fragment.recyclerView.setAdapter(fragment.adapter);
                 fragment.setOnItemClickListener(new PersonalChallengeAdapter.OnItemClickListener() {
                     @Override
@@ -180,6 +181,19 @@ public class HomeFragment extends Fragment {
                 });
             }
         }
+    }
+
+    public void updateRecyclerView(ArrayList<PersonalChallenge> personalChallengeList){
+
+        PersonalChallengeAdapter newAdapter = new PersonalChallengeAdapter(personalChallengeList, getActivity(), PersonalChallengeDatabase.getInstance(requireContext()).challengeDao(), new WeakReference<>(this));
+        recyclerView.setAdapter(newAdapter);
+
+        newAdapter.setOnItemClickListener(new PersonalChallengeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                startEditChallengeActivity(position);
+            }
+        });
     }
 
     @Override
@@ -202,8 +216,8 @@ public class HomeFragment extends Fragment {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            imageBitmap = ImgUtils.scaleSquareBitmap(imageBitmap, 256);
-            imageBitmap = ImgUtils.getRoundedSquareBitmap(imageBitmap, 256, 40);
+            imageBitmap = ImgUtils.scaleSquareBitmap(imageBitmap, 128);
+            imageBitmap = ImgUtils.getRoundedSquareBitmap(imageBitmap, 128, 20);
             profileImageView.setImageBitmap(imageBitmap);
         }
     }

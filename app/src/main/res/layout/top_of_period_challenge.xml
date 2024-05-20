@@ -7,7 +7,7 @@
 
     <!-- ImageView для отображения картинки сверху -->
     <ImageView
-        android:id="@+id/globalChallengeImage"
+        android:id="@+id/topOfPeriodGlobalChallengeImage"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="centerCrop"/>

@@ -5,16 +5,16 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:layout_margin="4dp"
-    android:background="@drawable/background_challenge_item_unchecked">
+    android:background="@drawable/background_rounded_rectangle_border_black">
 
     <ImageView
-        android:id="@+id/globalChallengeImage"
+        android:id="@+id/friendChallengeImage"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:scaleType="centerCrop"/>
 
     <TextView
-        android:id="@+id/globalChallengeTitle"
+        android:id="@+id/friendChallengeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Заголовок"
@@ -23,12 +23,32 @@
         android:layout_marginTop="16dp"/>
 
     <TextView
-        android:id="@+id/globalChallengeDescription"
+        android:id="@+id/frienChallengeDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Описание"
         android:textSize="14sp"
         android:textColor="@android:color/darker_gray"
         android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/toFriendsNames"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Получатели: "
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/fromFriendName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Отправитель: "
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

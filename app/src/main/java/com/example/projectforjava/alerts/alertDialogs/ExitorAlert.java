@@ -1,4 +1,4 @@
-package com.example.projectforjava.alerts;
+package com.example.projectforjava.alerts.alertDialogs;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

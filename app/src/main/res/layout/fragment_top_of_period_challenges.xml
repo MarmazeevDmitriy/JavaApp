@@ -21,7 +21,7 @@
             android:layout_marginBottom="15dp"/>
 
         <include layout="@layout/top_of_period_challenge"
-            android:id="@+id/main_fragments_header"
+            android:id="@+id/topOfDay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -37,7 +37,7 @@
             android:layout_marginBottom="15dp"/>
 
         <include layout="@layout/top_of_period_challenge"
-            android:id="@+id/main_fragments_header"
+            android:id="@+id/topOfWeek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -53,7 +53,7 @@
             android:layout_marginBottom="15dp"/>
 
         <include layout="@layout/top_of_period_challenge"
-            android:id="@+id/main_fragments_header"
+            android:id="@+id/topOfMonth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
