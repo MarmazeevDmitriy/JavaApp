@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +45,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Friend request rejected", Toast.LENGTH_SHORT).show();
                 friendRequests.remove(position);
                 notifyDataSetChanged();
             }
@@ -52,6 +55,7 @@ public class FriendRequestsAdapter extends RecyclerView.Adapter<FriendRequestsAd
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
+                Toast.makeText(v.getContext(), "Friend request accepted", Toast.LENGTH_SHORT).show();
                 friendRequests.remove(position);
                 notifyDataSetChanged();
             }

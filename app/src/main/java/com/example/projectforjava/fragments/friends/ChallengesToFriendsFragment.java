@@ -50,16 +50,15 @@ public class ChallengesToFriendsFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         ArrayList<String> friendsNames = new ArrayList<>();
-        friendsNames.add("Friend 1");
-        friendsNames.add("Friend 2");
-        friendsNames.add("Friend 3");
+        friendsNames.add("John Doe");
+        friendsNames.add("Steel wolf");
 
         challengeList = new ArrayList<>();
         Drawable drawable = ContextCompat.getDrawable(requireContext(), R.drawable.random);
         drawable = ImgUtils.BitmapToDrawable(ImgUtils.scaleRectangleBitmap(ImgUtils.drawableToBitmap(drawable), 256, 128), requireContext());
-        challengeList.add(new FriendsChallenge(drawable, "Burp fast", "Idk buurp", friendsNames, "Димастер"));
-        challengeList.add(new FriendsChallenge(drawable, "Burp quick", "Idk again buuurp", friendsNames, "Димастер"));
-        challengeList.add(new FriendsChallenge(drawable, "Burp just", "Bruhhhhhhhhhhhhhhhhhhhhhhhh bbbbbbbbbbuuuuuuuuuuuuurp", friendsNames, "Димастер"));
+        challengeList.add(new FriendsChallenge(drawable, "ChallengeToFriends1", "Description 1", friendsNames, "Димастер"));
+        challengeList.add(new FriendsChallenge(drawable, "ChallengeToFriends2", "Description 2", friendsNames, "Димастер"));
+        challengeList.add(new FriendsChallenge(drawable, "ChallengeToFriends3", "Description 3", friendsNames, "Димастер"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new FriendsChallengesAdapter(challengeList, true);

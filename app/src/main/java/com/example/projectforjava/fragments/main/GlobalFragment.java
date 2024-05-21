@@ -22,6 +22,7 @@ import com.example.projectforjava.fragments.global.GlobalChallengesFragment;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomViewPager;
 import com.example.projectforjava.fragments.global.TopOfPeriodChallengesFragment;
+import com.example.projectforjava.preferences.PreferencesManager;
 import com.example.projectforjava.utils.ImgUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -42,12 +43,12 @@ public class GlobalFragment extends Fragment {
         TabLayout tabLayout = view.findViewById(R.id.tabLayoutGlobal);
 
         TextView textView = view.findViewById(R.id.headerUsersName);
-        textView.setText("Димастер");
         ImageView profileImageView = view.findViewById(R.id.circleProfileImage);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
-        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 128);
-        bitmap = ImgUtils.getRoundedBitmap(bitmap);
-        profileImageView.setImageBitmap(bitmap);
+        PreferencesManager preferencesManager = new PreferencesManager(requireContext());
+        if(preferencesManager.getProfileName() != null)
+            textView.setText(preferencesManager.getProfileName());
+        if(preferencesManager.getProfileIcon() != null)
+            profileImageView.setImageBitmap(ImgUtils.getRoundedBitmap(preferencesManager.getProfileIcon()));
 
         viewPager.setSwipeEnabled(false);
 

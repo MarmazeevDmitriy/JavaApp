@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.projectforjava.alerts.alertDialogs.ExitorAlert;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomStatusBar;
+import com.example.projectforjava.preferences.AuthPreferencesManager;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
@@ -25,6 +26,7 @@ public class RegistrationActivity extends AppCompatActivity {
         CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_registration);
 
+        AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
         usernameEditText = findViewById(R.id.registerUsername);
         passwordEditText = findViewById(R.id.password_edit_text);
 
@@ -44,10 +46,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(RegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                    MainActivity mainActivity = new MainActivity();
-                    mainActivity.setUsername(newUsername);
-                    mainActivity.setPassword(newPassword);
-                    mainActivity.setIsLogined(true); // изменение переменной isLogined на true
+                    authPreferencesManager.setEmail(newUsername);
+                    authPreferencesManager.setPassword(newPassword);
 
                     setResult(Activity.RESULT_OK, new Intent());
                     finish();

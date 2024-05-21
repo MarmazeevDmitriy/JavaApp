@@ -22,11 +22,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectforjava.R;
 import com.example.projectforjava.activities.EditPersonalChallengeActivity;
+import com.example.projectforjava.activities.MainActivity;
 import com.example.projectforjava.adapters.personal.PersonalChallengeAdapter;
 import com.example.projectforjava.database.dao.PersonalChallengeDao;
 import com.example.projectforjava.database.db.PersonalChallengeDatabase;
 import com.example.projectforjava.database.model.PersonalChallenge;
+import com.example.projectforjava.preferences.AuthPreferencesManager;
 import com.example.projectforjava.preferences.DatePreferences;
+import com.example.projectforjava.preferences.PreferencesManager;
 import com.example.projectforjava.utils.ImgUtils;
 
 import java.io.IOException;
@@ -43,6 +46,8 @@ public class HomeFragment extends Fragment {
 
     private static final int EDIT_PERSONAL_CHALLENGE = 1;
     private static final int PICK_IMAGE_REQUEST = 2;
+
+    PreferencesManager preferencesManager;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -94,7 +99,11 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.logout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Logout", Toast.LENGTH_SHORT).show();
+                AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(requireContext());
+                authPreferencesManager.setIsLogined(false);
+                MainActivity mainActivity = (MainActivity) getActivity();
+                assert mainActivity != null;
+                mainActivity.startAuth();
             }
         });
 
@@ -105,12 +114,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        TextView textView = view.findViewById(R.id.usersName);
-        textView.setText("Димастер");
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.its_me);
-        bitmap = ImgUtils.scaleSquareBitmap(bitmap, 128);
-        bitmap = ImgUtils.getRoundedSquareBitmap(bitmap, 128, 20);
-        profileImageView.setImageBitmap(bitmap);
+        preferencesManager = new PreferencesManager(requireContext());
+        String name = preferencesManager.getProfileName();
+        if(name != null){
+            TextView textView = view.findViewById(R.id.usersName);
+            textView.setText(name);
+        }
+        Bitmap img = preferencesManager.getProfileIcon();
+        if(img != null){
+            profileImageView.setImageBitmap(img);
+        }
 
         return view;
     }
@@ -218,6 +231,7 @@ public class HomeFragment extends Fragment {
             }
             imageBitmap = ImgUtils.scaleSquareBitmap(imageBitmap, 128);
             imageBitmap = ImgUtils.getRoundedSquareBitmap(imageBitmap, 128, 20);
+            preferencesManager.setProfileIcon(imageBitmap);
             profileImageView.setImageBitmap(imageBitmap);
         }
     }

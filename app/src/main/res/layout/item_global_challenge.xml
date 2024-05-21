@@ -62,7 +62,7 @@
             android:id="@+id/warningButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/warning"
+            android:src="@drawable/warning_not_pressed"
             android:background="@color/white"/>
 
         <!-- Пространство для разделения кнопок -->
@@ -79,5 +79,13 @@
             android:src="@drawable/like_not_pressed"
             android:background="@color/white"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/likesAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|end"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
 
 </LinearLayout>

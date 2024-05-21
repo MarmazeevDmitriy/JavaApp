@@ -14,7 +14,7 @@
 
     <!-- TextView для заголовка -->
     <TextView
-        android:id="@+id/globalChallengeTitle"
+        android:id="@+id/topOfPeriodGlobalChallengeTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Заголовок"
@@ -24,7 +24,7 @@
 
     <!-- TextView для описания-->
     <TextView
-        android:id="@+id/globalChallengeDescription"
+        android:id="@+id/topOfPeriodGlobalChallengeDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Описание"
@@ -33,7 +33,7 @@
         android:layout_marginTop="8dp"/>
 
     <TextView
-        android:id="@+id/globalChallengeApproximateTime"
+        android:id="@+id/topOfPeriodGlobalChallengeApproximateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Примерное время выполнений"

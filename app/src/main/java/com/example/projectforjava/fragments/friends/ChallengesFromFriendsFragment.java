@@ -56,9 +56,9 @@ public class ChallengesFromFriendsFragment extends Fragment implements FriendCha
         friendsNames.add("Friend 2");
         friendsNames.add("Friend 3");
         // Заполните friendList вашими данными
-        cList.add(new FriendsChallenge(drawable, "Jump fast", "Idk", friendsNames, "Friend 1"));
-        cList.add(new FriendsChallenge(drawable, "Jump quick", "Idk again", friendsNames, "Friend 2"));
-        cList.add(new FriendsChallenge(drawable, "Jump just", "Bruhhhhhhhhhhhhhhhhhhhhhhhh", friendsNames, "Friend3"));
+        cList.add(new FriendsChallenge(drawable, "ChallengeFromFriends1", "Description 1", friendsNames, "John Doe"));
+        cList.add(new FriendsChallenge(drawable, "ChallengeFromFriends2", "Description 2", friendsNames, "Steel wolf"));
+        cList.add(new FriendsChallenge(drawable, "ChallengeFromFriends3", "Description 3", friendsNames, "Soup lover"));
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new FriendsChallengesAdapter(cList, false);

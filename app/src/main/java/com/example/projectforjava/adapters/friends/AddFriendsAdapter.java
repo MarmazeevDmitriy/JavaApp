@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -54,6 +55,7 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
             public void onClick(View v) {
                 if(!addFriend.isRequestSent()){
                     holder.sendFriendRequest.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+                    Toast.makeText(context, "Friend request sent", Toast.LENGTH_SHORT).show();
                 }
             }
         });

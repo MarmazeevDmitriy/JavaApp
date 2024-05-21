@@ -25,6 +25,8 @@ import com.example.projectforjava.fragments.main.HomeFragment;
 import com.example.projectforjava.fragments.main.LeaderBoardFragment;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomStatusBar;
+import com.example.projectforjava.preferences.AuthPreferencesManager;
+import com.example.projectforjava.preferences.PreferencesManager;
 import com.example.projectforjava.services.Notificator;
 import com.google.android.material.tabs.TabLayout;
 
@@ -32,11 +34,6 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-
-    private boolean isLogined = true;
-    private String username = "user";
-    private String password = "password";
-
     public static final String CHANNEL_ID = "";
 
     @SuppressLint("ClickableViewAccessibility")
@@ -45,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_main);
+
+        AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
+        authPreferencesManager.clearAll();
+        PreferencesManager preferencesManager = new PreferencesManager(this);
+        preferencesManager.clearAll();
+        preferencesManager.setProfileName("Димастер");
+
+        if (!authPreferencesManager.getIsLogined()) {
+            startAuth();
+        }
 
         ActivityResultLauncher<String[]> multiPermissionLauncher =
                 registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
@@ -57,11 +64,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Notificator.scheduleNotification(this, Calendar.getInstance());
-
-        if (!isLogined) {
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivityForResult(loginIntent, 1);
-        }
 
         CustomViewPager viewPager = findViewById(R.id.viewPagerMain);
         TabLayout tabLayout = findViewById(R.id.tabLayoutMain);
@@ -128,24 +130,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            isLogined = true;
+            AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
+            authPreferencesManager.setIsLogined(true);
         }
-    }
-
-    public boolean checkCredentials(String enteredUsername, String enteredPassword) {
-        return enteredUsername.equals(username) && enteredPassword.equals(password);
-    }
-
-    public void setUsername(String newUsername) {
-        this.username = newUsername;
-    }
-
-    public void setPassword(String newPassword) {
-        this.password = newPassword;
-    }
-
-    public void setIsLogined(boolean newStatus) {
-        this.isLogined = newStatus;
     }
 
     private void removeNestedFragmentIfPresent() {
@@ -155,6 +142,11 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().remove(fragment).commit();
             fragmentManager.popBackStack("FRIEND_REQUESTS", FragmentManager.POP_BACK_STACK_INCLUSIVE);
         }
+    }
+
+    public void startAuth(){
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivityForResult(loginIntent, 1);
     }
 
     @SuppressLint("MissingSuperCall")

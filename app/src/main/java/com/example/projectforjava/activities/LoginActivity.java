@@ -18,6 +18,9 @@ import android.widget.Toast;
 import com.example.projectforjava.alerts.alertDialogs.ExitorAlert;
 import com.example.projectforjava.R;
 import com.example.projectforjava.customElements.CustomStatusBar;
+import com.example.projectforjava.preferences.AuthPreferencesManager;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_login);
 
+        AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
         usernameEditText = findViewById(R.id.enterUsernameEditText);
         passwordEditText = findViewById(R.id.password_edit_text);
 
@@ -43,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(enteredUsername) || TextUtils.isEmpty(enteredPassword)) {
                     Toast.makeText(LoginActivity.this, "Username or password cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mainActivity.checkCredentials(enteredUsername, enteredPassword)) {
+                    if (Objects.equals(authPreferencesManager.getEmail(), enteredUsername) && Objects.equals(authPreferencesManager.getPassword(), enteredPassword)) {
                         Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
                         setResult(Activity.RESULT_OK, new Intent());
                         finish();

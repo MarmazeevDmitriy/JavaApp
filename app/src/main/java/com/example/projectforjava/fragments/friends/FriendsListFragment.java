@@ -50,7 +50,7 @@ public class FriendsListFragment extends Fragment {
         friendList.add(new Friend(ImgUtils.BitmapToDrawable(ImgUtils.getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.my_friend)), requireContext()),
                 "John Doe", 5, 3));
         friendList.add(new Friend(ImgUtils.BitmapToDrawable(ImgUtils.getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.my_friend)), requireContext()),
-                "Greatest Dio", 107, 10));
+                "Steel wolf", 107, 10));
         friendList.add(new Friend(ImgUtils.BitmapToDrawable(ImgUtils.getRoundedBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.my_friend)), requireContext()),
                 "Soup lover", 20, 40));
         // Добавьте другие объекты Friend в friendList
