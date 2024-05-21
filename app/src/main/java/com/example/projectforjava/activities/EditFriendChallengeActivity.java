@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.projectforjava.R;
 import com.example.projectforjava.adapters.friends.FriendsAdapter;
+import com.example.projectforjava.customElements.CustomStatusBar;
 import com.example.projectforjava.templates.friends.Friend;
 import com.example.projectforjava.templates.friends.FriendsChallenge;
 import com.example.projectforjava.utils.ImgUtils;
@@ -48,6 +49,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_edit_friend_challenge);
 
         selectedFriendsTextView = findViewById(R.id.selectedFriendsTextView);
