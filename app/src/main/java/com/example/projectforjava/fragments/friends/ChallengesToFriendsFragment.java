@@ -25,6 +25,7 @@ import com.example.projectforjava.templates.friends.FriendsChallenge;
 import com.example.projectforjava.utils.ImgUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ChallengesToFriendsFragment extends Fragment {
@@ -100,6 +101,7 @@ public class ChallengesToFriendsFragment extends Fragment {
     public void startEditChallengeActivity(int position) {
         Intent intent = new Intent(getActivity(), EditFriendChallengeActivity.class);
         intent.putExtra("position", position);
+        challengeList = (ArrayList<FriendsChallenge>) adapter.getFriendsChallengeListFull();
         if(!challengeList.isEmpty()){
             ArrayList<String> titles = new ArrayList<>();
             for(FriendsChallenge friendsChallenge: challengeList){

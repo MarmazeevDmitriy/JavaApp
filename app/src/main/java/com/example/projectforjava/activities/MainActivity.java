@@ -44,10 +44,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
-        authPreferencesManager.clearAll();
-        PreferencesManager preferencesManager = new PreferencesManager(this);
-        preferencesManager.clearAll();
-        preferencesManager.setProfileName("Димастер");
 
         if (!authPreferencesManager.getIsLogined()) {
             startAuth();

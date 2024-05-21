@@ -49,11 +49,15 @@ public class AddFriendsAdapter extends RecyclerView.Adapter<AddFriendsAdapter.Ad
         if(addFriend.isRequestSent()){
             holder.sendFriendRequest.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
         }
+        else {
+            holder.sendFriendRequest.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+        }
         holder.sendFriendRequest.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onClick(View v) {
                 if(!addFriend.isRequestSent()){
+                    addFriend.setRequestSent(true);
                     holder.sendFriendRequest.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
                     Toast.makeText(context, "Friend request sent", Toast.LENGTH_SHORT).show();
                 }

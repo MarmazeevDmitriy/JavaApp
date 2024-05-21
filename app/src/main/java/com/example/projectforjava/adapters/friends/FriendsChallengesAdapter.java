@@ -67,6 +67,10 @@ public class FriendsChallengesAdapter extends RecyclerView.Adapter<FriendsChalle
         return friendsChallengeList.size();
     }
 
+    public List<FriendsChallenge> getFriendsChallengeListFull(){
+        return friendsChallengeListFull;
+    }
+
     public void addItem(FriendsChallenge friendsChallenge){
         friendsChallengeListFull.add(friendsChallenge);
         if(lastSearchText.isEmpty() || friendsChallenge.getTitle().toLowerCase().contains(lastSearchText)){

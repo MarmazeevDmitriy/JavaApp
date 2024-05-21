@@ -39,6 +39,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
 
     FriendsChallenge friendsChallenge;
     ArrayList<String> titles;
+    String current_title;
 
     ImageView image;
     EditText etChallengeTitle;
@@ -70,7 +71,8 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
 
         if(position != -1) {
             friendsChallenge = getIntent().getParcelableExtra("FriendsChallenge");
-            etChallengeTitle.setText(friendsChallenge.getTitle());
+            current_title = friendsChallenge.getTitle();
+            etChallengeTitle.setText(current_title);
             etChallengeDescription.setText(friendsChallenge.getDescription());
             image.setImageDrawable(friendsChallenge.getImage());
             names.addAll(friendsChallenge.getReceiversNames());
@@ -131,7 +133,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
         });
     }
 
-    private boolean approveNewChallengeInfo(boolean editC){
+    private boolean approveNewChallengeInfo(){
         String title = etChallengeTitle.getText().toString().trim();
         String description = etChallengeDescription.getText().toString().trim();
 
@@ -141,7 +143,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
         }
 
         // Проверка уникальности названия челленджа
-        if (titles.contains(title.toLowerCase()) && !editC) {
+        if ((titles.contains(title.toLowerCase()) && current_title == null) || (current_title != null && !title.equals(current_title) && titles.contains(title.toLowerCase()))) {
             Toast.makeText(this, "Challenge title must be unique", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -178,7 +180,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
     }
 
     private void addChallenge(){
-        if(approveNewChallengeInfo(false)){
+        if(approveNewChallengeInfo()){
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Action", "Add");
             resultIntent.putExtra("challenge", new FriendsChallenge(image.getDrawable(), etChallengeTitle.getText().toString().trim(),
@@ -189,7 +191,7 @@ public class EditFriendChallengeActivity extends AppCompatActivity {
     }
 
     private void editChallenge(int position){
-        if(approveNewChallengeInfo(true)){
+        if(approveNewChallengeInfo()){
             Intent resultIntent = new Intent();
             resultIntent.putExtra("Action", "Update");
             resultIntent.putExtra("challenge", new FriendsChallenge(image.getDrawable(), etChallengeTitle.getText().toString().trim(),
