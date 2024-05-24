@@ -1,5 +1,6 @@
 package com.example.projectforjava.adapters.global;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectforjava.R;
+import com.example.projectforjava.templates.friends.Friend;
 import com.example.projectforjava.templates.global.GlobalChallenge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallengeAdapter.GlobalChallengeViewHolder> {
     private List<GlobalChallenge> globalChallengeList;
+    private List<GlobalChallenge> filteredList;
     private Context context;
 
     public GlobalChallengeAdapter(Context context, List<GlobalChallenge> globalChallengeList) {
         this.context = context;
         this.globalChallengeList = globalChallengeList;
+        this.filteredList = new ArrayList<>(globalChallengeList);
     }
 
     @NonNull
@@ -34,7 +39,7 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
 
     @Override
     public void onBindViewHolder(@NonNull GlobalChallengeViewHolder holder, int position) {
-        GlobalChallenge challenge = globalChallengeList.get(position);
+        GlobalChallenge challenge = filteredList.get(position);
 
         holder.globalChallengeImage.setImageDrawable(challenge.getImage());
         holder.globalChallengeTitle.setText(challenge.getTitle());
@@ -60,7 +65,23 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
 
     @Override
     public int getItemCount() {
-        return globalChallengeList.size();
+        return filteredList.size();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void filter(String text) {
+        filteredList.clear();
+        if (text.isEmpty()) {
+            filteredList.addAll(globalChallengeList);
+        } else {
+            text = text.toLowerCase();
+            for (GlobalChallenge item : globalChallengeList) {
+                if (item.getTitle().toLowerCase().contains(text)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     public static class GlobalChallengeViewHolder extends RecyclerView.ViewHolder {
