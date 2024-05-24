@@ -1,5 +1,6 @@
 package com.example.projectforjava.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -14,8 +15,15 @@ import android.widget.Toast;
 
 import com.example.projectforjava.alerts.alertDialogs.ExitorAlert;
 import com.example.projectforjava.R;
+import com.example.projectforjava.api.ServerAPI;
 import com.example.projectforjava.customElements.CustomStatusBar;
 import com.example.projectforjava.preferences.AuthPreferencesManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import com.example.projectforjava.models.User;
 
 public class RegistrationActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
@@ -41,16 +49,37 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(RegistrationActivity.this, "Username or password cannot be empty", Toast.LENGTH_SHORT).show();
                 } else if (!isPasswordValid(newPassword)) {
                     Toast.makeText(RegistrationActivity.this, "Password must be at least 8 characters long", Toast.LENGTH_SHORT).show();
-                } else if (!isUsernameUnique(newUsername)) {
-                    Toast.makeText(RegistrationActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(RegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
 
-                    authPreferencesManager.setEmail(newUsername);
-                    authPreferencesManager.setPassword(newPassword);
+                    User user = new User(newUsername, newPassword);
 
-                    setResult(Activity.RESULT_OK, new Intent());
-                    finish();
+                    // Регистрация пользователя
+                    ServerAPI.getInstance().registerUser(user, new Callback<String>() {
+                        @Override
+                        public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
+                            if (response.isSuccessful()) {
+                                String message = response.body();
+                                assert message != null;
+                                if(message.equals("Success")){
+                                    Toast.makeText(RegistrationActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                    authPreferencesManager.setEmail(newUsername);
+                                    authPreferencesManager.setPassword(newPassword);
+                                    setResult(Activity.RESULT_OK, new Intent());
+                                    finish();
+                                }
+                                else{
+                                    Toast.makeText(RegistrationActivity.this, "Username already exists", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(RegistrationActivity.this, "Ошибка: " + response.code() + " - " + response.message(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                            Toast.makeText(RegistrationActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -58,12 +87,6 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return password.length() >= 8; // Проверка, что пароль содержит 8 или больше символов
-    }
-
-    private boolean isUsernameUnique(String username) {
-        // Фиктивная проверка на уникальность логина
-        // Здесь можно добавить реальную проверку, если у вас появится база данных
-        return true;
     }
 
     @SuppressLint("MissingSuperCall")

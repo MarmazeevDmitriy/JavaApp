@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             multiPermissionLauncher.launch(new String[]{Manifest.permission.POST_NOTIFICATIONS, Manifest.permission.SCHEDULE_EXACT_ALARM, Manifest.permission.RECEIVE_BOOT_COMPLETED,
-                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS});
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Manifest.permission.INTERNET});
         }
 
         Notificator.scheduleNotification(this, Calendar.getInstance());

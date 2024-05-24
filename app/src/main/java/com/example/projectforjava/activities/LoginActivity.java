@@ -2,6 +2,7 @@ package com.example.projectforjava.activities;
 
 import static android.app.PendingIntent.getActivity;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,10 +18,16 @@ import android.widget.Toast;
 
 import com.example.projectforjava.alerts.alertDialogs.ExitorAlert;
 import com.example.projectforjava.R;
+import com.example.projectforjava.api.ServerAPI;
 import com.example.projectforjava.customElements.CustomStatusBar;
+import com.example.projectforjava.models.User;
 import com.example.projectforjava.preferences.AuthPreferencesManager;
 
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText, passwordEditText;
@@ -47,13 +54,34 @@ public class LoginActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(enteredUsername) || TextUtils.isEmpty(enteredPassword)) {
                     Toast.makeText(LoginActivity.this, "Username or password cannot be empty", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (Objects.equals(authPreferencesManager.getEmail(), enteredUsername) && Objects.equals(authPreferencesManager.getPassword(), enteredPassword)) {
-                        Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
-                        setResult(Activity.RESULT_OK, new Intent());
-                        finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
-                    }
+
+                    User user = new User(enteredUsername, enteredPassword);
+                    // Вход пользователя
+                    ServerAPI.getInstance().loginUser(user, new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
+                            if (response.isSuccessful()) {
+                                boolean isUserFound = Boolean.TRUE.equals(response.body());
+                                if(isUserFound){
+                                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                                    authPreferencesManager.setEmail(enteredUsername);
+                                    authPreferencesManager.setPassword(enteredPassword);
+                                    setResult(Activity.RESULT_OK, new Intent());
+                                    finish();
+                                }
+                                else{
+                                    Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Ошибка: " + response.code() + " - " + response.message(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable t) {
+                            Toast.makeText(LoginActivity.this, "Ошибка сети: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
