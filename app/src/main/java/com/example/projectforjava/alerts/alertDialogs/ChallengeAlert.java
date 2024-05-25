@@ -9,10 +9,10 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.projectforjava.R;
-import com.example.projectforjava.alerts.interfaces.FriendChallengeDialogListener;
+import com.example.projectforjava.alerts.interfaces.ChallengeDialogListener;
 
-public class FriendChallengeAlert {
-    public static void showFriendChallengeDialog(Context context, int position, FriendChallengeDialogListener listener) {
+public class ChallengeAlert {
+    public static void showFriendChallengeDialog(Context context, int position, ChallengeDialogListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.dialog_friend_challenge, null);

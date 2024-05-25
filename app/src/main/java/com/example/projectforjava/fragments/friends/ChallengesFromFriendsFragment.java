@@ -20,15 +20,14 @@ import android.widget.EditText;
 
 import com.example.projectforjava.R;
 import com.example.projectforjava.adapters.friends.FriendsChallengesAdapter;
-import com.example.projectforjava.alerts.alertDialogs.FriendChallengeAlert;
-import com.example.projectforjava.alerts.interfaces.FriendChallengeDialogListener;
+import com.example.projectforjava.alerts.alertDialogs.ChallengeAlert;
+import com.example.projectforjava.alerts.interfaces.ChallengeDialogListener;
 import com.example.projectforjava.templates.friends.FriendsChallenge;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ChallengesFromFriendsFragment extends Fragment implements FriendChallengeDialogListener {
-    private static final int OPEN_ACTIONS_DIALOG = 4;
+public class ChallengesFromFriendsFragment extends Fragment implements ChallengeDialogListener {
 
     FriendsChallengesAdapter adapter;
     private RecyclerView recyclerView;
@@ -70,7 +69,7 @@ public class ChallengesFromFriendsFragment extends Fragment implements FriendCha
                 // Действия при нажатии на элемент списка
                 // Например, открытие экрана редактирования челленджа
                 editTextSearch.setEnabled(false);
-                FriendChallengeAlert.showFriendChallengeDialog(getContext(), position, ChallengesFromFriendsFragment.this);
+                ChallengeAlert.showFriendChallengeDialog(getContext(), position, ChallengesFromFriendsFragment.this);
             }
         });
 
