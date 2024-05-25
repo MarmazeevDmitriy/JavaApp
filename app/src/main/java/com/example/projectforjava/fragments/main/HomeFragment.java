@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.projectforjava.R;
 import com.example.projectforjava.activities.EditPersonalChallengeActivity;
 import com.example.projectforjava.activities.MainActivity;
+import com.example.projectforjava.activities.SettingsActivity;
 import com.example.projectforjava.adapters.personal.PersonalChallengeAdapter;
 import com.example.projectforjava.database.dao.PersonalChallengeDao;
 import com.example.projectforjava.database.db.PersonalChallengeDatabase;
@@ -99,7 +100,7 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Settings", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
             }
         });
 
