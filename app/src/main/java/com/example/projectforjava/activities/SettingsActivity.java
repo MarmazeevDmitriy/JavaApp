@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.projectforjava.R;
 import com.example.projectforjava.api.ServerAPI;
+import com.example.projectforjava.customElements.CustomStatusBar;
 import com.example.projectforjava.models.User;
 import com.example.projectforjava.preferences.AuthPreferencesManager;
 
@@ -21,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CustomStatusBar.changeStatusBar(this);
         setContentView(R.layout.activity_settings);
         AuthPreferencesManager authPreferencesManager = new AuthPreferencesManager(this);
 
