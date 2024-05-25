@@ -36,6 +36,7 @@ public class GlobalChallengeDataGenerator {
             int warnings = random.nextInt(50);
             boolean isLiked = random.nextBoolean();
             boolean isWarned = random.nextBoolean();
+            boolean isAccepted = random.nextBoolean();
 
             challenges.add(new GlobalChallenge(
                     image,
@@ -48,7 +49,8 @@ public class GlobalChallengeDataGenerator {
                     likes,
                     warnings,
                     isLiked,
-                    isWarned
+                    isWarned,
+                    isAccepted
             ));
         }
         return challenges;

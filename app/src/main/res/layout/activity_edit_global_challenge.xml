@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="16dp"
+    tools:context=".activities.EditGlobalChallengeActivity">
+
+    <ImageView
+        android:id="@+id/globalChallengeImageInput"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/no_image_set"
+        android:scaleType="centerCrop"/>
+
+    <EditText
+        android:id="@+id/editTextTitleGC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/globalChallengeImageInput"
+        android:hint="Название челленджа"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editTextDescriptionGC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextTitleGC"
+        android:layout_marginTop="16dp"
+        android:hint="Описание челленджа"
+        android:inputType="text" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/editTextDescriptionGC">
+
+        <EditText
+            android:id="@+id/editTextTimeGC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Время выполнения"
+            android:inputType="text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <AutoCompleteTextView
+            android:id="@+id/editTextTimeMeasureGC"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="мин/час/день"
+            android:inputType="none"
+            android:focusable="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/buttonEditChallengeGC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttonDeleteChallengeGC"
+        android:layout_marginTop="24dp"
+        android:text="Изменить челлендж" />
+
+    <Button
+        android:id="@+id/buttonAddNewChallengeGC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        android:text="Добавить челлендж"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/buttonDeleteChallengeGC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="2dp"
+        android:text="Удалить челлендж" />
+
+</RelativeLayout>

@@ -13,9 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.projectforjava.R;
-import com.example.projectforjava.templates.friends.Friend;
+import com.example.projectforjava.fragments.global.AcceptedChallengesFragment;
+import com.example.projectforjava.fragments.global.CreateGlobalChallengeFragment;
 import com.example.projectforjava.templates.global.GlobalChallenge;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,13 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
     private List<GlobalChallenge> globalChallengeList;
     private List<GlobalChallenge> filteredList;
     private Context context;
+    private OnItemClickListener onItemClickListener;
+    private WeakReference<AcceptedChallengesFragment> acceptedChallengesFragmentWeakReference;
+    private WeakReference<CreateGlobalChallengeFragment> createGlobalChallengeFragmentWeakReference;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position, GlobalChallenge item);
+    }
 
     public GlobalChallengeAdapter(Context context, List<GlobalChallenge> globalChallengeList) {
         this.context = context;
@@ -30,11 +39,29 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
         this.filteredList = new ArrayList<>(globalChallengeList);
     }
 
+    public GlobalChallengeAdapter(Context context, List<GlobalChallenge> globalChallengeList, WeakReference<AcceptedChallengesFragment> acceptedChallengesFragmentWeakReference) {
+        this.context = context;
+        this.globalChallengeList = globalChallengeList;
+        this.filteredList = new ArrayList<>(globalChallengeList);
+        this.acceptedChallengesFragmentWeakReference = acceptedChallengesFragmentWeakReference;
+    }
+
+    public GlobalChallengeAdapter(Context context, List<GlobalChallenge> globalChallengeList, WeakReference<CreateGlobalChallengeFragment> createGlobalChallengeFragmentWeakReference, boolean create) {
+        this.context = context;
+        this.globalChallengeList = globalChallengeList;
+        this.filteredList = new ArrayList<>(globalChallengeList);
+        this.createGlobalChallengeFragmentWeakReference = createGlobalChallengeFragmentWeakReference;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     @NonNull
     @Override
     public GlobalChallengeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_global_challenge, parent, false);
-        return new GlobalChallengeViewHolder(view);
+        return new GlobalChallengeViewHolder(view, onItemClickListener, filteredList);
     }
 
     @Override
@@ -61,11 +88,51 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
             challenge.setWarned(!challenge.isWarned());
             notifyItemChanged(position);
         });
+
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(position, challenge);
+            }
+        });
+
+        if(acceptedChallengesFragmentWeakReference != null || createGlobalChallengeFragmentWeakReference != null){
+            holder.likeButton.setVisibility(View.GONE);
+            holder.warningButton.setVisibility(View.GONE);
+            holder.likesAmount.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public int getItemCount() {
         return filteredList.size();
+    }
+
+    public List<GlobalChallenge> getGlobalChallengeListFull() {
+        return globalChallengeList;
+    }
+
+    public void addItem(GlobalChallenge globalChallenge){
+        globalChallengeList.add(globalChallenge);
+        filteredList.add(globalChallenge);
+        notifyItemInserted(filteredList.size() - 1);
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateItem(int position){
+        deleteItem(position);
+    }
+
+    public void deleteItem(int position){
+        if(position != -1){
+            globalChallengeList.remove(filteredList.get(position));
+            filteredList.remove(position);
+        }
+        if(acceptedChallengesFragmentWeakReference != null){
+            acceptedChallengesFragmentWeakReference.get().updateRecyclerView((ArrayList<GlobalChallenge>) globalChallengeList);
+        }
+        if(createGlobalChallengeFragmentWeakReference != null){
+            createGlobalChallengeFragmentWeakReference.get().updateRecyclerView((ArrayList<GlobalChallenge>) globalChallengeList);
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -92,10 +159,9 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
         TextView globalChallengeTimesCompleted;
         ImageButton warningButton;
         ImageButton likeButton;
-
         TextView likesAmount;
 
-        public GlobalChallengeViewHolder(View itemView) {
+        public GlobalChallengeViewHolder(View itemView, OnItemClickListener onItemClickListener, List<GlobalChallenge> filteredList) {
             super(itemView);
             globalChallengeImage = itemView.findViewById(R.id.globalChallengeImage);
             globalChallengeTitle = itemView.findViewById(R.id.globalChallengeTitle);
@@ -105,6 +171,13 @@ public class GlobalChallengeAdapter extends RecyclerView.Adapter<GlobalChallenge
             warningButton = itemView.findViewById(R.id.warningButton);
             likeButton = itemView.findViewById(R.id.likeButton);
             likesAmount = itemView.findViewById(R.id.likesAmount);
+
+            itemView.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION && onItemClickListener != null) {
+                    onItemClickListener.onItemClick(position, filteredList.get(position));
+                }
+            });
         }
     }
 }

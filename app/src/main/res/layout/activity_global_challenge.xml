@@ -6,4 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".activities.GlobalChallengeActivity">
 
+    <ImageView
+        android:id="@+id/globalChallengeViewImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/globalChallengeViewTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Заголовок"
+        android:textColor="@android:color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/globalChallengeViewImage"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/globalChallengeViewDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Описание"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/globalChallengeViewTitle"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/buttonAcceptGlobalChallenge"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Принять челлендж"
+        android:textSize="24sp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
