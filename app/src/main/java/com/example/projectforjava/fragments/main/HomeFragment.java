@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +38,11 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class HomeFragment extends Fragment {
 
@@ -222,17 +229,47 @@ public class HomeFragment extends Fragment {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
-            Bitmap imageBitmap;
-            // Теперь у вас есть URI выбранного изображения. Вы можете использовать его для отображения или сохранения.
-            try {
-                imageBitmap = ImgUtils.getBitmapFromUri(requireActivity(), imageUri);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            imageBitmap = ImgUtils.scaleSquareBitmap(imageBitmap, 128);
-            imageBitmap = ImgUtils.getRoundedSquareBitmap(imageBitmap, 128, 20);
-            preferencesManager.setProfileIcon(imageBitmap);
-            profileImageView.setImageBitmap(imageBitmap);
+            // Определите ExecutorService
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+
+            // Создайте Callable для обработки изображения
+            Callable<Bitmap> imageProcessingTask = new Callable<Bitmap>() {
+                @Override
+                public Bitmap call() throws Exception {
+                    Bitmap imageBitmap;
+                    // Теперь у вас есть URI выбранного изображения. Вы можете использовать его для отображения или сохранения.
+                    try {
+                        imageBitmap = ImgUtils.getBitmapFromUri(requireActivity(), imageUri);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    imageBitmap = ImgUtils.scaleSquareBitmap(imageBitmap, 128);
+                    return ImgUtils.getRoundedSquareBitmap(imageBitmap, 128, 20);
+                }
+            };
+
+            // Выполните задачу и получите результат
+            Future<Bitmap> future = executorService.submit(imageProcessingTask);
+
+            // Обновите UI на главном потоке
+            executorService.execute(() -> {
+                try {
+                    Bitmap processedBitmap = future.get();
+
+                    // Возвращаемся на главный поток для обновления UI
+                    mainHandler.post(() -> {
+                        preferencesManager.setProfileIcon(processedBitmap);
+                        profileImageView.setImageBitmap(processedBitmap);
+                    });
+
+                } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            // Закройте ExecutorService после завершения всех задач
+            executorService.shutdown();
         }
     }
 
