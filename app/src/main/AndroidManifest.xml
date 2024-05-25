@@ -23,8 +23,15 @@
         android:theme="@style/Theme.ProjectForJava"
         tools:targetApi="31">
         <activity
+            android:name=".activities.EditGlobalChallengeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".activities.GlobalChallengeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activities.EditFriendChallengeActivity"
             android:exported="false"
